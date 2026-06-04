@@ -81,10 +81,10 @@ Once call data is ingested, four processing modules run in parallel:
 
 ```
                     ┌─────────────────────┐
-                    │   Raw Call Data      │
+                    │   Raw Call Data     │
                     └──────────┬──────────┘
                                │
-           ┌───────────────────┼───────────────────┐
+           ┌───────────────────┼───────────────────┐───────────────────┐
            │                   │                   │                   │
            ▼                   ▼                   ▼                   ▼
   ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
@@ -98,25 +98,26 @@ Once call data is ingested, four processing modules run in parallel:
 ```
 
 #### Transcription
+
 - Speaker-diarized transcripts for every call
 - Full-text search across the call library
 - Tagging by outcome, intent, or failure type
 
 #### Latency Audit
 
-```
+``` Bash
   Call start
       │
       ├──► STT          [~120ms] ──────────────────────────┐
-      │                                                     │
-      ├──► LLM first token  [~400ms] ──────────────────┐   │
-      │                                                 │   │  Waterfall
-      ├──► LLM full response [~650ms] ──────────────┐  │   │  view per
-      │                                              │  │   │  call
-      ├──► TTS render    [~200ms] ────────────────┐  │  │   │
-      │                                           │  │  │   │
-      └──► Telephony handoff [~80ms] ──────────┐  │  │  │   │
-                                               ▼  ▼  ▼  ▼   ▼
+      │                                                    │
+      ├──► LLM first token  [~400ms] ─────────────────-─┐  │
+      │                                                 │  │  Waterfall
+      ├──► LLM full response [~650ms] ─────────────-─┐  │  │  view per
+      │                                              │  │  │  call
+      ├──► TTS render    [~200ms] ────────────────┐  │  │  │
+      │                                           │  │  │  │
+      └──► Telephony handoff [~80ms] ──────────┐  │  │  │  │
+                                               ▼  ▼  ▼  ▼  ▼
                                             Total end-to-end latency
 ```
 
@@ -125,13 +126,14 @@ Once call data is ingested, four processing modules run in parallel:
 - Configurable threshold alerting per stage
 
 #### Quality Scoring
+
 - Automated detection of interruptions, silence gaps, speaking pace, and turn length
 - Caller sentiment shift tracking across the conversation
 - Aggregate scores per agent version for prompt/persona comparison
 
 #### Cost Attribution
 
-```
+``` Bash
   One call =
     STT cost   ($/min)
   + LLM cost   ($/1k tokens)
@@ -157,7 +159,7 @@ All processed outputs are normalized into a consistent schema and indexed for:
 - Historical trend analysis and anomaly detection
 - Cross-version funnel comparison
 
-```
+``` Bash
   ┌──────────────────────────────────────────────────┐
   │              Structured Data Store               │
   │                                                  │
@@ -212,7 +214,7 @@ Alerts fire to **Slack, PagerDuty, or email** when latency, error rate, cost, or
 
 The key architectural bet is the normalization layer: by converting data from any provider into a consistent internal schema, LangVox becomes the **persistent observability layer** even as teams swap out LLMs, TTS engines, or telephony stacks.
 
-```
+``` Bash
   Without LangVox:          With LangVox:
 
   Vapi ──► your app         Vapi ──┐
@@ -221,6 +223,7 @@ The key architectural bet is the normalization layer: by converting data from an
 ```
 
 This means:
+
 - No re-instrumentation when switching providers
 - Call history, quality benchmarks, and alert thresholds survive stack migrations
 - Switching costs compound over time as data accumulates
