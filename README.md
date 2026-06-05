@@ -11,9 +11,9 @@
 
 ## What is AudioTrace?
 
-AudioTrace is a Python framework that takes a raw audio file from a voice AI agent call and returns a fully structured `CallReport` — every quality signal, sentiment shift, latency breakdown, cost figure, and compliance flag extracted and normalized into a single object.
-
-It is **not** a dashboard. It is **not** a SaaS product. It is the open-source infrastructure layer that any team building voice agent tooling can build on top of.
+A voice AI plumbing tool every team rebuilds from scratch — until now.
+Drop in a call recording. Get back everything: transcript, quality scores, sentiment shifts, latency breakdown, cost attribution, compliance flags. Normalized. Structured. Queryable. Works with any provider, any stack.
+One integration. Zero plumbing. Ship faster.
 
 ```python
 import audiotrace
