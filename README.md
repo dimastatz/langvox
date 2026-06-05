@@ -1,6 +1,6 @@
 <div align="center">
 <h1 align="center"> LangVox </h1> 
-<h3>Voice Agents Observability Framework</br></h3>
+<h3>CI/CD for voice AI</br></h3>
 <img src="https://img.shields.io/badge/Progress-10%25-red"> <img src="https://img.shields.io/badge/Feedback-Welcome-green">
 </br>
 </br>
