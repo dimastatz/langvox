@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build test image
+        run: docker build -f docker/Dockerfile.test -t audiotrace-test .
+
+      - name: Lint (ruff)
+        run: docker run --rm audiotrace-test ruff check .
+
+      - name: Type-check (mypy)
+        run: docker run --rm audiotrace-test mypy src/audiotrace
+
+      - name: Tests (pytest)
+        run: docker run --rm audiotrace-test pytest

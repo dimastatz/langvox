@@ -1,0 +1,24 @@
+# CI/CD test image for AudioTrace.
+#   Build:  docker build -f docker/Dockerfile.test -t audiotrace-test .
+#   Test:   docker run --rm audiotrace-test            # -> pytest
+#   Lint:   docker run --rm audiotrace-test ruff check .
+#   Types:  docker run --rm audiotrace-test mypy src/audiotrace
+FROM python:3.12-slim-bookworm
+
+# FFmpeg is the one non-Python system dependency (audio decoding / normalization).
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install dependencies first (cached unless packaging or source-layout changes).
+# README is referenced by pyproject's `readme`, so it must be present at install.
+COPY pyproject.toml README.md ./
+COPY src ./src
+RUN pip install --no-cache-dir -e ".[dev]"
+
+# Tests change most often — copy them last so edits don't bust the install layer.
+COPY tests ./tests
+
+CMD ["pytest"]

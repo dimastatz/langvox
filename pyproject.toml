@@ -1,0 +1,66 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "audiotrace"
+version = "0.1.0"
+description = "Structured analysis for voice-agent call recordings — transcript, quality, sentiment, latency, cost, and events from raw audio."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "AudioTrace contributors" }]
+keywords = ["voice", "ai", "observability", "transcription", "telephony"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+]
+dependencies = [
+    "pydantic>=2,<3",
+]
+
+[project.optional-dependencies]
+# Provider adapters — populated as each adapter lands (see docs/roadmap.md).
+vapi = []
+retell = []
+twilio = ["twilio>=8"]
+elevenlabs = []
+deepgram = ["deepgram-sdk>=3"]
+all = ["audiotrace[vapi,retell,twilio,elevenlabs,deepgram]"]
+# Everything needed to develop, test, lint, and type-check the library.
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+    "mypy>=1.10",
+]
+
+[project.urls]
+Homepage = "https://github.com/audiotrace/audiotrace"
+Repository = "https://github.com/audiotrace/audiotrace"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/audiotrace"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+# Library targets 3.9+ (ruff enforces py39 syntax); mypy checks against 3.10,
+# its lowest supported target. `from __future__ import annotations` keeps the
+# modern annotation syntax valid at runtime on 3.9.
+[tool.mypy]
+python_version = "3.10"
+strict = true
+plugins = ["pydantic.mypy"]
+mypy_path = "src"
+explicit_package_bases = true
