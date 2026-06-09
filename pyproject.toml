@@ -32,6 +32,7 @@ all = ["audiotrace[vapi,retell,twilio,elevenlabs,deepgram]"]
 # Everything needed to develop, test, lint, and type-check the library.
 dev = [
     "pytest>=8",
+    "pytest-cov>=5",
     "ruff>=0.6",
     "mypy>=1.10",
 ]
@@ -53,7 +54,14 @@ select = ["E", "F", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q"
+addopts = "-q --cov=audiotrace --cov-report=term-missing --cov-fail-under=95"
+
+[tool.coverage.run]
+source = ["audiotrace"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
 
 # Library targets 3.9+ (ruff enforces py39 syntax); mypy checks against 3.10,
 # its lowest supported target. `from __future__ import annotations` keeps the

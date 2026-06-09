@@ -28,7 +28,7 @@ docker/Dockerfile.test # CI/CD test image (python:3.12-slim-bookworm + ffmpeg)
 
 ```bash
 pip install -e ".[dev]"   # install library + dev tooling
-pytest                    # run tests
+pytest                    # run tests + coverage (fails under 95%)
 ruff check .              # lint
 ruff format .             # format
 mypy src/audiotrace       # type-check (strict)
@@ -52,4 +52,5 @@ docker run --rm audiotrace-test mypy src/audiotrace
 - **FFmpeg is a system dependency.** It's installed in the test image; assume it
   exists at runtime, don't reimplement audio decoding.
 - **Keep CI green.** Before finishing a change, run `pytest`, `ruff check .`,
-  and `mypy src/audiotrace`.
+  and `mypy src/audiotrace`. Test coverage must stay ≥ 95% (enforced by
+  `--cov-fail-under=95` in `pyproject.toml`) — new code needs tests.
