@@ -9,6 +9,17 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
+class MediaInfo(BaseModel):
+    """Metadata about the media file containing the call recording."""
+
+    duration_ms: int
+    sample_rate_hz: int
+    channels: int
+    codec: str
+    file_size_bytes: int
+    file_format: str
+    bitrate_kbps: float
+
 
 class Turn(BaseModel):
     """A single speaker turn within the transcript."""
