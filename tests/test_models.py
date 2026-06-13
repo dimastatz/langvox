@@ -1,4 +1,4 @@
-from audiotrace import CallReport, Transcript, Turn, MediaInfo
+from audiotrace import CallReport, MediaInfo, Transcript, Turn
 
 
 def test_callreport_defaults():

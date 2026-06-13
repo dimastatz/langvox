@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
+
 class MediaInfo(BaseModel):
     """Metadata about the media file containing the call recording."""
 
