@@ -61,4 +61,4 @@ answer: show N/A in a meantime
 - `analyze("call.wav")` returns a `CallReport` where `report.media` is fully populated.
 - `report.media.duration_ms` is accurate within 100ms.
 - FFmpeg/ffprobe dependency is verified and handled gracefully.
-- `pytest`, `ruff check .`, and `mypy src/audiotrace` all pass.
+- `./scripts/test_local.sh test` passes (covers formatting, linting, and coverage).
